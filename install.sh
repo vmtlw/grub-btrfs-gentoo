@@ -1,5 +1,11 @@
 #!/bin/bash
 
+set -euo
+
+if [[ ! $EUID == 0 ]]; then
+        echo -e "run this script as root!"
+	exit 1
+fi
 
 eselect repository enable guru 
 
@@ -9,6 +15,7 @@ emerge app-backup/grub-btrfs
 
 if [[ -e /.snapshots ]]; then
 	mkdir /.snapshots
+fi
 
 btrfs su sn / /.snapshots/snap_`date +%Y-%m-%d_%R:%S`
 
